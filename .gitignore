@@ -6,3 +6,7 @@
 
 # Azure Functions local settings
 local.settings.json
+
+# Private/personal notes
+**/interview_notes.md
+LarpVault/interview_notes.md
