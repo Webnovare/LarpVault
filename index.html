@@ -14,17 +14,14 @@
 </head>
 <body class="min-h-screen p-6">
   <div class="max-w-2xl mx-auto">
-    <!-- Header -->
     <div class="text-center mb-10">
       <h1 class="text-6xl font-bold mb-2">🏴‍☠️ LarpVault</h1>
       <p class="text-2xl text-amber-400">Live Like A Legend</p>
       <p class="text-gray-400">Only $10,000 for perceived success</p>
     </div>
 
-    <!-- Buy Section -->
     <div class="card rounded-3xl p-8 mb-10">
       <h2 class="text-2xl font-semibold mb-6 text-center">Buy Your Pack</h2>
-      
       <div>
         <label class="block text-sm font-medium mb-2">Your Email</label>
         <input id="email" type="email" value="adam@test.com"
@@ -32,24 +29,21 @@
       </div>
     </div>
 
-    <!-- Packs Browser (now clickable) -->
     <div class="card rounded-3xl p-8">
       <h2 class="text-2xl font-semibold mb-6">📦 Available LARP Packs</h2>
-      
-      <div id="packsList" class="grid grid-cols-1 gap-4">
-        <!-- Packs loaded here with Buy buttons -->
-      </div>
+      <div id="packsList" class="grid grid-cols-1 gap-4"></div>
     </div>
+
+    <!-- Global result area -->
+    <div id="globalResult" class="mt-8"></div>
   </div>
 
   <script>
     const API_BASE = 'https://larpvault-functions-eadfdghpdqbgexah.eastus-01.azurewebsites.net/api';
 
-    async function purchase(email, packName) {
-      const resultDiv = document.getElementById('purchaseResult') || 
-                       (document.body.appendChild(document.createElement('div')));
-
-      resultDiv.innerHTML = `<p class="text-amber-400 text-center">Processing your elite lifestyle...</p>`;
+    async function purchase(email, packName, attempt = 1) {
+      const resultDiv = document.getElementById('globalResult');
+      resultDiv.innerHTML = `<p class="text-amber-400 text-center">Processing... (server waking up if slow)</p>`;
 
       try {
         const res = await fetch(`${API_BASE}/purchase`, {
@@ -62,20 +56,22 @@
 
         if (res.ok) {
           resultDiv.innerHTML = `
-            <div class="success bg-green-900/50 border border-green-400 rounded-2xl p-6 mt-6">
+            <div class="success bg-green-900/50 border border-green-400 rounded-2xl p-6">
               <p class="text-2xl mb-3">🎟️ Purchase Successful!</p>
               <p class="mb-2">Order ID: <span class="font-mono bg-black/30 px-2 py-1 rounded">${data.orderId}</span></p>
-              <p class="text-amber-300">${data.message}</p>
-              <button onclick="copyToClipboard('${data.orderId}')" 
-                      class="mt-4 text-sm bg-white/20 hover:bg-white/30 px-5 py-2 rounded-xl">
-                📋 Copy Order ID
-              </button>
+              <p class="text-amber-300">${data.message || 'Your LARP pack is being processed in the background.'}</p>
+              <button onclick="copyToClipboard('${data.orderId}')" class="mt-4 text-sm bg-white/20 hover:bg-white/30 px-5 py-2 rounded-xl">📋 Copy Order ID</button>
             </div>`;
         } else {
-          resultDiv.innerHTML = `<p class="text-red-400 text-center">Error: ${data.error || 'Unknown error'}</p>`;
+          throw new Error(data.error || 'Unknown error');
         }
       } catch (err) {
-        resultDiv.innerHTML = `<p class="text-red-400 text-center">Cannot connect to backend.</p>`;
+        if (attempt < 3) {
+          resultDiv.innerHTML = `<p class="text-amber-400 text-center">Connection reset — retrying (${attempt}/3)...</p>`;
+          setTimeout(() => purchase(email, packName, attempt + 1), 1500);
+        } else {
+          resultDiv.innerHTML = `<p class="text-red-400 text-center">Could not connect to backend after 3 attempts.<br><small>${err.message}</small></p>`;
+        }
       }
     }
 
@@ -101,7 +97,7 @@
                     <p class="text-2xl font-bold text-amber-400">$${pack.price.toLocaleString()}</p>
                     <p class="text-xs text-gray-500">${pack.clips} clips</p>
                     <button onclick="purchase(document.getElementById('email').value, '${pack.name}')" 
-                            class="mt-3 bg-amber-400 hover:bg-amber-500 text-black font-bold px-6 py-2 rounded-xl text-sm">
+                            class="mt-4 bg-amber-400 hover:bg-amber-500 text-black font-bold px-6 py-2 rounded-xl text-sm">
                       Buy This Pack
                     </button>
                   </div>
@@ -120,7 +116,6 @@
       alert("✅ Order ID copied!");
     }
 
-    // Load packs when page loads
     window.onload = loadPacks;
   </script>
 </body>
