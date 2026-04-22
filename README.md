@@ -30,7 +30,7 @@ func start LarpVault_Api.csproj
 Open index.html in your browser and click "BUY NOW - BECOME A LEGEND"
 Features
 
-bash''
+```
 
 POST /api/purchase – Buy a LARP pack
 GET /api/packs – Browse available packs
