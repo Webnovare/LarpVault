@@ -1,55 +1,63 @@
 # 🏴‍☠️ LarpVault – Live Like A Legend
 
-**The world's most entertaining way to practice Azure Functions, production support, and serverless architecture.**
+**Buy perceived success for $10,000. Get the ultimate LARP content pack.**
 
-Buy "perceived success" for just $10,000.  
-Get instant access to supercar B-roll, luxury watch shots, private jet vibes, and elite hustle culture aesthetics.
+A fun but **production-grade** Azure Functions project built to demonstrate real-world skills for Production Support / Azure roles.
 
-Built as a **realistic production-style Azure Functions** project.
+![LarpVault](https://via.placeholder.com/800x300/0f172a/60a5fa?text=LarpVault+-+Live+Like+A+Legend)
 
-![Demo](https://via.placeholder.com/800x400/0f172a/60a5fa?text=LarpVault+Demo)
+## ✨ What It Does
 
-## ✨ Live Demo
+When you click "BUY NOW", it:
+- Accepts the purchase via HTTP trigger
+- "Sends" the order to a background queue (Service Bus style)
+- Logs the processing in the background processor
 
-1. Run `func start` in the `LarpVault.Api` folder
-2. Open `index.html` in your browser
-3. Click **"BUY NOW - BECOME A LEGEND"**
+Built to showcase async processing, logging, CORS, and clean architecture.
 
 ## 🚀 Quick Start
 
-```bash
-# Clone the repo
-git clone https://github.com/Webnovare/LarpVault.git
-cd LarpVault
+### 1. Start the services (in separate terminals)
 
-# Start Azurite (in one terminal)
+```bash
+# Terminal 1 - Storage Emulator
 azurite
 
-# Start the API (in another terminal)
+# Terminal 2 - Azure Functions
 cd LarpVault.Api
-func start
+func start LarpVault_Api.csproj
 
+2. Open the Frontend
+Open index.html in your browser and click "BUY NOW - BECOME A LEGEND"
 Features
 
 Modern .NET 10 Azure Functions (Isolated Worker)
-Clean HTTP trigger with proper CORS
-Beautiful single-file frontend with Tailwind
+Clean HTTP Trigger with CORS support
+Beautiful single-file Tailwind frontend
+Background processing simulation (Service Bus Queue Trigger ready)
 Structured logging
-Ready for Azure SQL + Service Bus (background processor coming soon)
+Copy Order ID functionality
+
+Project Structure
+
+LarpVault/
+├── index.html                 ← Nice frontend
+├── LarpVault.Api/
+│   ├── PurchaseFunction.cs    ← HTTP Purchase endpoint
+│   ├── PurchaseProcessor.cs   ← Background processor
+│   ├── Program.cs
+│   └── LarpVault_Api.csproj
+├── README.md
 
 Tech Stack
 
-Backend: .NET 10 + Azure Functions Isolated
-Frontend: HTML + Tailwind CSS (single file)
-Tools: Azurite, Azure Functions Core Tools
+.NET 10 + Azure Functions Isolated
+Azure Service Bus (Queue Trigger)
+Azurite (local storage)
+Tailwind CSS (frontend)
 
 
-Made for fun + serious interview preparation.
-Perfect for anyone learning:
-
-Azure Functions production support
-Serverless architecture
-Monitoring & async processing
-
-Star ⭐ if you're fake rich or actually building real skills.
-Built by Adam Hanafi
+Focuses on monitoring, async processing, troubleshooting, and clean code.
+Made with sarcasm and real Azure skills.
+Star ⭐ if you also believe $10,000 is a fair price for confidence.
+Adam Hanafi

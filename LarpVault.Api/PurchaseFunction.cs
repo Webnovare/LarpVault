@@ -19,7 +19,6 @@ public class PurchaseFunction
     public async Task<HttpResponseData> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", "options", Route = "purchase")] HttpRequestData req)
     {
-        // Handle CORS preflight (OPTIONS) request
         if (req.Method == "OPTIONS")
         {
             var optionsResponse = req.CreateResponse(HttpStatusCode.NoContent);
@@ -45,6 +44,20 @@ public class PurchaseFunction
                 return badResponse;
             }
 
+            var orderId = Guid.NewGuid();
+
+            // Simulate sending to Service Bus Queue
+            var queueMessage = new
+            {
+                OrderId = orderId,
+                Email = purchase.Email,
+                PackName = purchase.PackName ?? "Ultimate LARP Pack",
+                Price = purchase.Price,
+                PurchasedAt = DateTime.UtcNow
+            };
+
+            _logger.LogInformation("📤 [SIMULATED] Sent Order {OrderId} to Service Bus queue 'larp-purchases'", orderId);
+
             var response = req.CreateResponse(HttpStatusCode.Created);
             response.Headers.Add("Access-Control-Allow-Origin", "*");
             response.Headers.Add("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -52,11 +65,11 @@ public class PurchaseFunction
 
             await response.WriteAsJsonAsync(new
             {
-                orderId = Guid.NewGuid(),
+                orderId = orderId,
                 packName = purchase.PackName ?? "Ultimate LARP Pack",
                 price = purchase.Price,
                 status = "Pending",
-                message = "🎟️ Purchase successful! Your LARP pack is being processed."
+                message = "🎟️ Purchase successful! Your LARP pack is being processed in the background."
             });
 
             return response;
