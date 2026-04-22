@@ -14,7 +14,6 @@
 </head>
 <body class="min-h-screen p-6">
   <div class="max-w-2xl mx-auto">
-    <!-- Header -->
     <div class="text-center mb-10">
       <h1 class="text-6xl font-bold mb-2">🏴‍☠️ LarpVault</h1>
       <p class="text-2xl text-amber-400">Live Like A Legend</p>
@@ -24,26 +23,19 @@
     <!-- Buy Section -->
     <div class="card rounded-3xl p-8 mb-10">
       <h2 class="text-2xl font-semibold mb-6 text-center">Buy Your Pack</h2>
-      
       <div class="grid grid-cols-1 gap-6">
         <div>
           <label class="block text-sm font-medium mb-2">Your Email</label>
-          <input id="email" type="email" value="adam@test.com"
-                 class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:border-amber-400 text-white">
+          <input id="email" type="email" value="adam@test.com" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:border-amber-400 text-white">
         </div>
-
         <div>
           <label class="block text-sm font-medium mb-2">Pack Name</label>
-          <input id="packName" type="text" value="Ultimate LARP Pack"
-                 class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:border-amber-400 text-white">
+          <input id="packName" type="text" value="Ultimate LARP Pack" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl focus:outline-none focus:border-amber-400 text-white">
         </div>
-
-        <button onclick="purchase()" id="buyButton"
-                class="w-full bg-amber-400 hover:bg-amber-500 transition-colors text-black font-bold text-xl py-4 rounded-2xl">
+        <button onclick="purchase()" id="buyButton" class="w-full bg-amber-400 hover:bg-amber-500 transition-colors text-black font-bold text-xl py-4 rounded-2xl">
           BUY NOW - BECOME A LEGEND 💰
         </button>
       </div>
-
       <div id="purchaseResult" class="mt-8"></div>
     </div>
 
@@ -51,20 +43,15 @@
     <div class="card rounded-3xl p-8">
       <h2 class="text-2xl font-semibold mb-6 flex items-center gap-3">
         📦 Available LARP Packs
-        <button onclick="loadPacks()" 
-                class="text-sm bg-white/20 hover:bg-white/30 px-4 py-1 rounded-xl transition-colors">
-          Refresh
-        </button>
+        <button onclick="loadPacks()" class="text-sm bg-white/20 hover:bg-white/30 px-4 py-1 rounded-xl transition-colors">Refresh</button>
       </h2>
-      
-      <div id="packsList" class="grid grid-cols-1 gap-4">
-        <!-- Packs will be loaded here -->
-      </div>
+      <div id="packsList" class="grid grid-cols-1 gap-4"></div>
     </div>
   </div>
 
   <script>
-    // Purchase Function
+    const API_BASE = 'https://larpvault-functions-eadfdghpdqbgexah.eastus-01.azurewebsites.net/api';
+
     async function purchase() {
       const email = document.getElementById('email').value;
       const packName = document.getElementById('packName').value;
@@ -73,47 +60,41 @@
 
       button.disabled = true;
       button.textContent = "Processing... ⏳";
-
       resultDiv.innerHTML = `<p class="text-amber-400 text-center">Processing your elite lifestyle...</p>`;
 
       try {
-        const res = await fetch('http://localhost:7071/api/purchase', {
+        const res = await fetch(`${API_BASE}/purchase`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, packName, price: 10000 })
         });
 
         const data = await res.json();
-
         if (res.ok) {
           resultDiv.innerHTML = `
             <div class="success bg-green-900/50 border border-green-400 rounded-2xl p-6">
               <p class="text-2xl mb-3">🎟️ Purchase Successful!</p>
               <p class="mb-2">Order ID: <span class="font-mono bg-black/30 px-2 py-1 rounded">${data.orderId}</span></p>
               <p class="text-amber-300">${data.message}</p>
-              <button onclick="copyToClipboard('${data.orderId}')" 
-                      class="mt-4 text-sm bg-white/20 hover:bg-white/30 px-5 py-2 rounded-xl">
-                📋 Copy Order ID
-              </button>
+              <button onclick="copyToClipboard('${data.orderId}')" class="mt-4 text-sm bg-white/20 hover:bg-white/30 px-5 py-2 rounded-xl">📋 Copy Order ID</button>
             </div>`;
         } else {
           resultDiv.innerHTML = `<p class="text-red-400 text-center">Error: ${data.error || 'Unknown error'}</p>`;
         }
       } catch (err) {
-        resultDiv.innerHTML = `<p class="text-red-400 text-center">Cannot connect to backend.<br>Make sure func start is running.</p>`;
+        resultDiv.innerHTML = `<p class="text-red-400 text-center">Cannot connect to backend.<br><small>${err.message}</small></p>`;
       } finally {
         button.disabled = false;
         button.textContent = "BUY NOW - BECOME A LEGEND 💰";
       }
     }
 
-    // Load Available Packs
     async function loadPacks() {
       const packsList = document.getElementById('packsList');
       packsList.innerHTML = `<p class="text-center text-gray-400">Loading packs...</p>`;
 
       try {
-        const res = await fetch('http://localhost:7071/api/packs');
+        const res = await fetch(`${API_BASE}/packs`);
         const data = await res.json();
 
         if (res.ok && data.packs) {
@@ -134,18 +115,19 @@
               </div>`;
           });
           packsList.innerHTML = html;
+        } else {
+          packsList.innerHTML = `<p class="text-red-400 text-center">Error loading packs</p>`;
         }
       } catch (err) {
-        packsList.innerHTML = `<p class="text-red-400 text-center">Could not load packs. Make sure func start is running.</p>`;
+        packsList.innerHTML = `<p class="text-red-400 text-center">Could not load packs.<br><small>${err.message}</small></p>`;
       }
     }
 
     function copyToClipboard(text) {
       navigator.clipboard.writeText(text);
-      alert("✅ Order ID copied to clipboard!");
+      alert("✅ Order ID copied!");
     }
 
-    // Load packs when page loads
     window.onload = loadPacks;
   </script>
 </body>
