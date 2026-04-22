@@ -19,6 +19,7 @@ Built to showcase async processing, logging, CORS, and clean architecture.
 
 ```bash
 # Terminal 1 - Storage Emulator
+cd LarpVault.Api
 azurite
 
 # Terminal 2 - Azure Functions
@@ -28,6 +29,8 @@ func start LarpVault_Api.csproj
 2. Open the Frontend
 Open index.html in your browser and click "BUY NOW - BECOME A LEGEND"
 Features
+
+bash''
 
 POST /api/purchase – Buy a LARP pack
 GET /api/packs – Browse available packs
