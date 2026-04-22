@@ -4,8 +4,6 @@
 
 A fun but **production-grade** Azure Functions project built to demonstrate real-world skills for Production Support / Azure roles.
 
-![LarpVault](https://via.placeholder.com/800x300/0f172a/60a5fa?text=LarpVault+-+Live+Like+A+Legend)
-
 ## ✨ What It Does
 
 When you click "BUY NOW", it:
@@ -31,6 +29,8 @@ func start LarpVault_Api.csproj
 Open index.html in your browser and click "BUY NOW - BECOME A LEGEND"
 Features
 
+POST /api/purchase – Buy a LARP pack
+GET /api/packs – Browse available packs
 Modern .NET 10 Azure Functions (Isolated Worker)
 Clean HTTP Trigger with CORS support
 Beautiful single-file Tailwind frontend
@@ -51,10 +51,10 @@ LarpVault/
 
 Tech Stack
 
-.NET 10 + Azure Functions Isolated
-Azure Service Bus (Queue Trigger)
-Azurite (local storage)
-Tailwind CSS (frontend)
+Backend: .NET 10 + Azure Functions (Isolated Worker Model)
+Frontend: HTML + Tailwind CSS
+Tools: Azurite, Azure Functions Core Tools, Azure Service Bus (Queue Trigger)
+Patterns: HTTP Triggers, Output Bindings, Queue Triggers, CORS, Dependency Injection
 
 
 Focuses on monitoring, async processing, troubleshooting, and clean code.
