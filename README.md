@@ -1,36 +1,55 @@
-# 🏴‍☠️ LarpVault – Live Like a Legend
+# 🏴‍☠️ LarpVault – Live Like A Legend
 
-**The world's most overpriced LARP (Live Action Role Play) asset pack for content creators, crypto bros, and aspiring gurus.**
+**The world's most entertaining way to practice Azure Functions, production support, and serverless architecture.**
 
-Buy "perceived success" in one click.  
-Get instant access to supercar revs, balcony market checks, private jet vibes, and that $40 watch that somehow looks like a Rolex.
+Buy "perceived success" for just $10,000.  
+Get instant access to supercar B-roll, luxury watch shots, private jet vibes, and elite hustle culture aesthetics.
 
-Built as a **real Azure Functions backend** — because even your fake success deserves production-grade infrastructure.
+Built as a **realistic production-style Azure Functions** project.
 
-![LarpVault Hero](https://via.placeholder.com/1200x400/0f172a/60a5fa?text=LarpVault+-+Live+Like+A+Legend)
+![Demo](https://via.placeholder.com/800x400/0f172a/60a5fa?text=LarpVault+Demo)
 
-## Why People Are Forking This
+## ✨ Live Demo
 
-- Fake it till you make it — but with **real code**
-- Clean, modern Azure Functions (.NET Isolated)
-- Beautiful single-file frontend (just open `index.html`)
-- Ready for Azure SQL + Service Bus async processing
-- Perfect for learning production support, monitoring, and serverless
-
-Whether you're building in silence, grinding in Dubai, or closing imaginary deals — **LarpVault has the clips**.
-
-## ✨ Live Demo (Try It Now)
-
-Just run it locally and open `index.html` — no account needed.
-
-**One-click "purchase" your elite lifestyle:**
-
-(Frontend coming in 3… 2… 1…)
+1. Run `func start` in the `LarpVault.Api` folder
+2. Open `index.html` in your browser
+3. Click **"BUY NOW - BECOME A LEGEND"**
 
 ## 🚀 Quick Start
 
-### 1. Clone the repo
-
 ```bash
+# Clone the repo
 git clone https://github.com/Webnovare/LarpVault.git
 cd LarpVault
+
+# Start Azurite (in one terminal)
+azurite
+
+# Start the API (in another terminal)
+cd LarpVault.Api
+func start
+
+Features
+
+Modern .NET 10 Azure Functions (Isolated Worker)
+Clean HTTP trigger with proper CORS
+Beautiful single-file frontend with Tailwind
+Structured logging
+Ready for Azure SQL + Service Bus (background processor coming soon)
+
+Tech Stack
+
+Backend: .NET 10 + Azure Functions Isolated
+Frontend: HTML + Tailwind CSS (single file)
+Tools: Azurite, Azure Functions Core Tools
+
+
+Made for fun + serious interview preparation.
+Perfect for anyone learning:
+
+Azure Functions production support
+Serverless architecture
+Monitoring & async processing
+
+Star ⭐ if you're fake rich or actually building real skills.
+Built by Adam Hanafi
