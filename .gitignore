@@ -1,1 +1,8 @@
-.interview_notes.md
+# Azurite local storage emulator - never commit!
+**/__blobstorage__/
+**/AzuriteConfig/
+**/__azurite_db_*
+**/__azurite_*.json
+
+# Azure Functions local settings
+local.settings.json
